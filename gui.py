@@ -28,7 +28,7 @@ def save_to_json(chef_name, dish_title, weight, ingredients):
     if os.name == "posix":
         filepath = os.path.expanduser("~/Desktop") + "/saved_labels/" + dish_title + "_" + chef_name + ".json"
     elif os.name == "nt":
-        filepath = os.environ['USERPROFILE'] + "\\Desktop\\saved_lables\\" + dish_title + "_" + chef_name + ".json" 
+        filepath = os.environ['USERPROFILE'] + "\\Desktop\\saved_labels\\" + dish_title + "_" + chef_name + ".json" 
     else:
         messagebox.showerror("Error", "Unsupported Operating System.")
         exit(0)
@@ -44,7 +44,7 @@ def load_from_json():
             filetypes = (("Json files", "*.json"), ("All files", "*.*")))
     elif os.name == "nt":
         filepath = filedialog.askopenfilename(
-            initialdir = os.environ['USERPROFILE'] + "\\Desktop\\saved_lables", 
+            initialdir = os.environ['USERPROFILE'] + "\\Desktop\\saved_labels", 
             title = "Select a File", 
             filetypes = (("Json files", "*.json"), ("All files", "*.*")))
     else:
