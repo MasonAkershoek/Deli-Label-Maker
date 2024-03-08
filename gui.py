@@ -28,7 +28,7 @@ def save_to_json(chef_name, dish_title, weight, ingredients):
     if os.name == "posix":
         filepath = os.path.expanduser("~/Desktop") + "/saved_labels/" + dish_title + "_" + chef_name + ".json"
     elif os.name == "nt":
-        filepath = os.environ['USERPROFILE'] + "/Desktop/saved_lables/" + dish_title + "_" + chef_name + ".json" 
+        filepath = os.environ['USERPROFILE'] + "\\Desktop\\saved_lables\\" + dish_title + "_" + chef_name + ".json" 
     else:
         messagebox.showerror("Error", "Unsupported Operating System.")
         exit(0)
@@ -44,7 +44,7 @@ def load_from_json():
             filetypes = (("Json files", "*.json"), ("All files", "*.*")))
     elif os.name == "nt":
         filepath = filedialog.askopenfilename(
-            initialdir = os.environ['USERPROFILE'] + "/Desktop/saved_lables", 
+            initialdir = os.environ['USERPROFILE'] + "\\Desktop\\saved_lables", 
             title = "Select a File", 
             filetypes = (("Json files", "*.json"), ("All files", "*.*")))
     else:
@@ -75,14 +75,14 @@ def check_dirs():
         if not os.path.isdir(os.path.expanduser("~/Desktop") + "/saved_labels"):
             os.mkdir(os.path.expanduser("~/Desktop") + "/saved_labels")
     elif os.name == "nt":
-        if not os.path.isdir(os.environ['USERPROFILE'] + "/Desktop/blanks"):
+        if not os.path.isdir(os.environ['USERPROFILE'] + "\\Desktop\\blanks"):
             if messagebox.askyesno("Error", "The Directory containing the blanks does not exist, would you like to create one?"):
-                os.mkdir(os.environ['USERPROFILE'] + "/Desktop/blanks")
+                os.mkdir(os.environ['USERPROFILE'] + "\\Desktop\\blanks")
             else:
                 messagebox.showerror("Error", "blanks folder not found please create and fill one before trying again.")
                 exit(0)
-        if not os.path.isdir(os.environ['USERPROFILE'] + "/Desktop/saved_labels"):
-            os.mkdir(os.environ['USERPROFILE'] + "/Desktop/saved_labels")
+        if not os.path.isdir(os.environ['USERPROFILE'] + "\\Desktop\\saved_labels"):
+            os.mkdir(os.environ['USERPROFILE'] + "\\Desktop\\saved_labels")
     else:
         messagebox.showerror("Error", "Unsupported Operating System.")
         exit(0)
@@ -96,10 +96,10 @@ def get_blanks():
         for blank in os.listdir(os.path.expanduser("~/Desktop/blanks")):
             blanks.append(blank)
     elif os.name == "nt":
-        if len(os.listdir(os.environ['USERPROFILE'] + "/Desktop/blanks")) == 0:
+        if len(os.listdir(os.environ['USERPROFILE'] + "\\Desktop\\blanks")) == 0:
             messagebox.showerror("Error", "The blanks folder is empty, please fill it with blanks before trying again.")
 
-        for blank in os.listdir(os.environ['USERPROFILE'] + "/Desktop/blanks"):
+        for blank in os.listdir(os.environ['USERPROFILE'] + "\\Desktop\\blanks"):
             blanks.append(blank)
 
     return blanks

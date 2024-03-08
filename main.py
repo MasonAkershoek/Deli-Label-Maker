@@ -44,8 +44,8 @@ def tk_interface(chef_name, dish_title, weight, blank, ingredients):
         input_pdf_path = os.path.expanduser("~/Desktop") + "/blanks/" + blank
         output_pdf_path = os.path.expanduser("~/Desktop") + "/" + dish_title + "_" + chef_name + ".pdf"
     else:
-        input_pdf_path = os.environ['USERPROFILE'] + "Desktop/blanks/" + blank
-        output_pdf_path = os.environ['USERPROFILE'] + "Desktop/" + dish_title + "_" + chef_name + ".pdf"
+        input_pdf_path = os.environ['USERPROFILE'] + "\\Desktop\\blanks\\" + blank
+        output_pdf_path = os.environ['USERPROFILE'] + "\\Desktop\\" + dish_title + "_" + chef_name + ".pdf"
     
 
     field_values = {
