@@ -8,7 +8,7 @@ import json
 def on_submit():
     chef_name = chef_name_entry.get()
     dish_title = dish_title_entry.get()
-    weight = weight_entry.get()
+    weight = weight_entry.get().capitalize()
     blank = label_type.get()
     ingredients = ingredients_entry.get('1.0', tk.END)
     save_to_json(chef_name, dish_title, weight, ingredients)
@@ -32,6 +32,10 @@ def save_to_json(chef_name, dish_title, weight, ingredients):
     else:
         messagebox.showerror("Error", "Unsupported Operating System.")
         exit(0)
+    
+    print(filepath)
+    if os.path.isfile(filepath):
+        os.remove(filepath)
 
     with open(filepath, "a") as outfile:
         outfile.write(json_object)
