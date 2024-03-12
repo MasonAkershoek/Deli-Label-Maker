@@ -16,7 +16,7 @@ def save_to_json(chef_name, dish_title, price, weight, ingredients):
     if os.name == "posix":
         filepath = os.path.expanduser("~/Desktop") + "/saved_labels/" + dish_title + "_" + chef_name + ".json"
     elif os.name == "nt":
-        filepath = os.environ['USERPROFILE'] + "\\Desktop\\saved_labels\\" + dish_title + "_" + chef_name + ".json" 
+        filepath = os.environ['USERPROFILE'] + "\\DeliLabelMaker\\saved_labels\\" + dish_title + "_" + chef_name + ".json" 
     else:
         messagebox.showerror("Error", "Unsupported Operating System.")
         exit(0)
@@ -36,7 +36,7 @@ def load_from_json():
             filetypes = (("Json files", "*.json"), ("All files", "*.*")))
     elif os.name == "nt":
         filepath = filedialog.askopenfilename(
-            initialdir = os.environ['USERPROFILE'] + "\\Desktop\\saved_labels", 
+            initialdir = os.environ['USERPROFILE'] + "\\DeliLabelMaker\\saved_labels", 
             title = "Select a File", 
             filetypes = (("Json files", "*.json"), ("All files", "*.*")))
     else:
@@ -47,3 +47,19 @@ def load_from_json():
         j_object = json.load(openfile)
     
     return j_object
+
+def format_title(title_text):
+    pass
+
+def format_weight(weight_text):
+    pass
+
+def format_price(price_text):
+    if '$' in price_text:
+        price_text.replace("$", "")
+
+def format_ingredients(ingredients_text):
+    pass
+
+def spell_check(to_check):
+    pass
