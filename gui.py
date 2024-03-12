@@ -48,6 +48,7 @@ def check_dirs():
     elif os.name == "nt":
         if not os.path.isdir(os.environ['USERPROFILE'] + "\\DeliLabelMaker\\blanks"):
             if messagebox.askyesno("Error", "The Directory containing the blanks does not exist, would you like to create one?"):
+                os.mkdir(os.environ['USERPROFILE'] + "\\DeliLabelMaker")
                 os.mkdir(os.environ['USERPROFILE'] + "\\DeliLabelMaker\\blanks")
             else:
                 messagebox.showerror("Error", "blanks folder not found please create and fill one before trying again.")
@@ -67,12 +68,13 @@ def get_blanks():
         for blank in os.listdir(os.path.expanduser("~/Desktop/blanks")):
             blanks.append(blank)
     elif os.name == "nt":
-        if len(os.listdir(os.environ['USERPROFILE'] + "\\Desktop\\blanks")) == 0:
+        if len(os.listdir("C:\\Users\\mason\\AppData\\Local\\Programs\\Deli Label Maker\\blanks")) == 0:
             messagebox.showerror("Error", "The blanks folder is empty, please fill it with blanks before trying again.")
 
-        for blank in os.listdir(os.environ['USERPROFILE'] + "\\Desktop\\blanks"):
+        for blank in os.listdir("C:\\Users\\mason\\AppData\\Local\\Programs\\Deli Label Maker\\blanks"):
             blanks.append(blank)
-
+    
+    blanks.sort()
     return blanks
 
 def open_template_editor_window():
@@ -111,7 +113,7 @@ root = tk.Tk()
 root.title("Deli Lable Maker")
 
 # Check to make sure all required directorys exsist
-check_dirs()
+#check_dirs()
 
 # Get the current templates available in the templates folder
 blanks = get_blanks()
