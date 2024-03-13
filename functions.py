@@ -16,12 +16,11 @@ def save_to_json(chef_name, dish_title, price, weight, ingredients):
     if os.name == "posix":
         filepath = os.path.expanduser("~/Desktop") + "/saved_labels/" + dish_title + "_" + chef_name + ".json"
     elif os.name == "nt":
-        filepath = "C:\\Users\\mason\AppData\\Local\\Programs\\Deli Label Maker\\saved_labels\\" + dish_title + "_" + chef_name + ".json" 
+        filepath = os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\saved_labels\\" + dish_title + "_" + chef_name + ".json" 
     else:
         messagebox.showerror("Error", "Unsupported Operating System.")
         exit(0)
     
-    print(filepath)
     if os.path.isfile(filepath):
         os.remove(filepath)
 
@@ -36,7 +35,7 @@ def load_from_json():
             filetypes = (("Json files", "*.json"), ("All files", "*.*")))
     elif os.name == "nt":
         filepath = filedialog.askopenfilename(
-            initialdir = "C:\\Users\\mason\AppData\\Local\\Programs\\Deli Label Maker\\saved_labels\\", 
+            initialdir = os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\saved_labels\\", 
             title = "Select a File", 
             filetypes = (("Json files", "*.json"), ("All files", "*.*")))
     else:
@@ -55,10 +54,22 @@ def format_weight(weight_text):
     pass
 
 def format_price(price_text):
-    if '$' in price_text:
-        price_text.replace("$", "")
+    newString = ""
+    for char in price_text:
+        if char == ".":
+            newString += char
+        for x in range(10):
+            if char == str(x):
+                newString += char
+    if newString[-1] == "0" and newString[-2] == "0":
+        newString = newString.replace(".00", "")
+    
+    return "$" + newString
 
 def format_ingredients(ingredients_text):
+    pass
+
+def format_date(date):
     pass
 
 def spell_check(to_check):

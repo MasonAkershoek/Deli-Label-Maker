@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox, Toplevel, END
+from tkcalendar import DateEntry
 from pdf_writer import tk_interface
 from functions import *
 import os
@@ -8,13 +9,13 @@ import os
 def on_submit():
     chef_name = chef_name_entry.get()
     dish_title = dish_title_entry.get()
-    price = price_entry.get()
-    format_price(price)
+    price = format_price(price_entry.get())
     weight = weight_entry.get().upper()
+    experation = str(experation_entry.get_date())
     blank = label_type.get()
     ingredients = ingredients_entry.get('1.0', tk.END)
     save_to_json(chef_name, dish_title, price, weight, ingredients)
-    tk_interface(chef_name, dish_title, price, weight, blank, ingredients)
+    tk_interface(chef_name, dish_title, price, weight, experation, blank, ingredients)
     result_label.config(text="Lables Created.")
 
 def load_json():
@@ -42,7 +43,7 @@ def check_dirs():
                 os.mkdir(os.path.expanduser("~/Desktop") + "/blanks")
             else:
                 messagebox.showerror("Error", "blanks folder not found please create and fill one before trying again.")
-                exit(1)
+                root.quit()
         if not os.path.isdir(os.path.expanduser("~/Desktop") + "/saved_labels"):
             os.mkdir(os.path.expanduser("~/Desktop") + "/saved_labels")
     elif os.name == "nt":
@@ -52,12 +53,12 @@ def check_dirs():
                 os.mkdir(os.environ['USERPROFILE'] + "\\DeliLabelMaker\\blanks")
             else:
                 messagebox.showerror("Error", "blanks folder not found please create and fill one before trying again.")
-                exit(0)
+                root.quit()
         if not os.path.isdir(os.environ['USERPROFILE'] + "\\DeliLabelMaker\\saved_labels"):
             os.mkdir(os.environ['USERPROFILE'] + "\\DeliLabelMaker\\saved_labels")
     else:
         messagebox.showerror("Error", "Unsupported Operating System.")
-        exit(0)
+        root.quit()
 
 def get_blanks():
     blanks = []
@@ -68,10 +69,10 @@ def get_blanks():
         for blank in os.listdir(os.path.expanduser("~/Desktop/blanks")):
             blanks.append(blank)
     elif os.name == "nt":
-        if len(os.listdir("C:\\Users\\mason\\AppData\\Local\\Programs\\Deli Label Maker\\blanks")) == 0:
+        if len(os.listdir(os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\blanks")) == 0:
             messagebox.showerror("Error", "The blanks folder is empty, please fill it with blanks before trying again.")
 
-        for blank in os.listdir("C:\\Users\\mason\\AppData\\Local\\Programs\\Deli Label Maker\\blanks"):
+        for blank in os.listdir(os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\blanks"):
             blanks.append(blank)
     
     blanks.sort()
@@ -105,8 +106,6 @@ def open_template_editor_window():
 
     t3 = tk.Radiobutton(template_editor, text="No caps", variable=v)
     t3.grid(row=3, column=1, padx=10, pady=10)
-
-print(__file__)
 
 # Create the main window
 root = tk.Tk()
@@ -165,27 +164,34 @@ weight_entry.grid(row=3, column=1, padx=10, pady=10)
 #weight_type = ttk.Combobox(state="OZ", values=weights)
 #weight_type.grid(row=3, column=2, padx=10, pady=10)
 
+# Label and Entry for Experation Date
+experation_label = tk.Label(root, text="Experation Date: ")
+experation_label.grid(row=4, column=0, padx=10, pady=10, sticky=tk.W)
+
+experation_entry = DateEntry(root, width=12, background="darkblue", foreground="white", borderwidth=2)
+experation_entry.grid(row=4, column=1, padx=10, pady=10)
+
 # Label and Entry for Template
 label_type_label = tk.Label(root, text="Label Type: ")
-label_type_label.grid(row=4, column=0, padx=10, pady=10, sticky=tk.W)
+label_type_label.grid(row=5, column=0, padx=10, pady=10, sticky=tk.W)
 
 label_type = ttk.Combobox( state=blanks[0], values=blanks)
-label_type.grid(row=4, column=1, padx=10, pady=10)
+label_type.grid(row=5, column=1, padx=10, pady=10)
 
 # Label and Entry for Ingredients
 ingredients_label = tk.Label(root, text="Ingredients: ")
-ingredients_label.grid(row=5, column=0, padx=10, pady=10, sticky=tk.W)
+ingredients_label.grid(row=6, column=0, padx=10, pady=10, sticky=tk.W)
 
 ingredients_entry = tk.Text(root)
-ingredients_entry.grid(row=5, column=1, padx=10, pady=10)
+ingredients_entry.grid(row=6, column=1, padx=10, pady=10)
 
 # Submit Button
 submit_button = tk.Button(root, text="Submit", command=on_submit)
-submit_button.grid(row=6, column=0, columnspan=2, pady=10)
+submit_button.grid(row=7, column=0, columnspan=2, pady=10)
 
 # Confirm submit label
 result_label = tk.Label(root, text="")
-result_label.grid(row=7, column=0, columnspan=2, pady=10)
+result_label.grid(row=8, column=0, columnspan=2, pady=10)
 
 # Tkinter event loop
 root.mainloop()

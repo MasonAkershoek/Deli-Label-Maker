@@ -39,12 +39,12 @@ def fill_single_page_pdf(input_path, output_path, field_values):
         pdfrw.PdfWriter().write(output_path, pdf)
         
 
-def tk_interface(chef_name, dish_title, price, weight, blank, ingredients):
+def tk_interface(chef_name, dish_title, price, weight, experation, blank, ingredients):
     if os.name == "posix":
         input_pdf_path = os.path.expanduser("~/Desktop") + "/blanks/" + blank
         output_pdf_path = os.path.expanduser("~/Desktop") + "/" + dish_title + "_" + chef_name + ".pdf"
     else:
-        input_pdf_path = "C:\\Users\\mason\\AppData\\Local\\Programs\\Deli Label Maker\\blanks\\" + blank
+        input_pdf_path = os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\blanks\\" + blank
         output_pdf_path = os.environ['USERPROFILE'] + "\\Desktop\\" + dish_title + "_" + chef_name + ".pdf"
     
 
@@ -89,6 +89,16 @@ def tk_interface(chef_name, dish_title, price, weight, blank, ingredients):
         'p8' : price,
         'p9' : price,
         'p10' : price,
+        'e1' : experation,
+        'e2' : experation,
+        'e3' : experation,
+        'e4' : experation,
+        'e5' : experation,
+        'e6' : experation,
+        'e7' : experation,
+        'e8' : experation,
+        'e9' : experation,
+        'e10' : experation,
     }
 
     fill_single_page_pdf(input_pdf_path, output_pdf_path, field_values)
