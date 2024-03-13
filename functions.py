@@ -51,7 +51,12 @@ def format_title(title_text):
     pass
 
 def format_weight(weight_text):
-    pass
+    newString = ""
+    for char in weight_text:
+        for x in range(10):
+            if char == str(x):
+                newString += char
+    return newString + " OZ"
 
 def format_price(price_text):
     newString = ""
@@ -67,10 +72,25 @@ def format_price(price_text):
     return "$" + newString
 
 def format_ingredients(ingredients_text):
-    pass
+    newtext = ingredients_text.capitalize()
+    if "Ingredients" not in newtext:
+        newtext = "Ingredients: " + newtext
+    return newtext
 
 def format_date(date):
-    pass
+    date_parts = date.split("-")
+    year = date_parts[0]
+    year = year[2] + year[3]
+    month = date_parts[1]
+    if month[0] == "0":
+        month = month.replace("0", "")
+    day = date_parts[2]
+    if day[0] == "0":
+        day = day.replace("0", "")
+    
+    newdate = "exp: " + month + "/" + day + "/" + year
+
+    return newdate
 
 def spell_check(to_check):
     pass

@@ -10,13 +10,14 @@ def on_submit():
     chef_name = chef_name_entry.get()
     dish_title = dish_title_entry.get()
     price = format_price(price_entry.get())
-    weight = weight_entry.get().upper()
-    experation = str(experation_entry.get_date())
+    weight = format_weight(weight_entry.get().upper())
+    experation = format_date(str(experation_entry.get_date()))
     blank = label_type.get()
-    ingredients = ingredients_entry.get('1.0', tk.END)
+    ingredients = format_ingredients(ingredients_entry.get('1.0', tk.END))
     save_to_json(chef_name, dish_title, price, weight, ingredients)
-    tk_interface(chef_name, dish_title, price, weight, experation, blank, ingredients)
+    printpath = tk_interface(chef_name, dish_title, price, weight, experation, blank, ingredients)
     result_label.config(text="Lables Created.")
+    os.startfile(printpath)
 
 def load_json():
     j_object = load_from_json()
@@ -116,9 +117,6 @@ root.title("Deli Lable Maker")
 
 # Get the current templates available in the templates folder
 blanks = get_blanks()
-
-# Weight types
-weights = ["OZ", "LB", "G"]
 
 # Setting up the menu bar
 menubar = tk.Menu(root)

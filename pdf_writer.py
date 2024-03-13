@@ -37,7 +37,8 @@ def fill_single_page_pdf(input_path, output_path, field_values):
                                 
         pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
         pdfrw.PdfWriter().write(output_path, pdf)
-        
+        print(output_path)
+        return output_path
 
 def tk_interface(chef_name, dish_title, price, weight, experation, blank, ingredients):
     if os.name == "posix":
@@ -101,4 +102,4 @@ def tk_interface(chef_name, dish_title, price, weight, experation, blank, ingred
         'e10' : experation,
     }
 
-    fill_single_page_pdf(input_pdf_path, output_pdf_path, field_values)
+    return fill_single_page_pdf(input_pdf_path, output_pdf_path, field_values)
