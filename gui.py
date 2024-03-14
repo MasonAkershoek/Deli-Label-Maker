@@ -45,18 +45,11 @@ def load_json():
 
 def get_blanks():
     blanks = []
-    if os.name == "posix":
-        if len(os.listdir(os.path.expanduser("~/Desktop/blanks"))) == 0:
+    if len(os.listdir(blanks_folder)) == 0:
             messagebox.showerror("Error", "The blanks folder is empty, please fill it with blanks before trying again.")
 
-        for blank in os.listdir(os.path.expanduser("~/Desktop/blanks")):
-            blanks.append(blank)
-    elif os.name == "nt":
-        if len(os.listdir(os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\blanks")) == 0:
-            messagebox.showerror("Error", "The blanks folder is empty, please fill it with blanks before trying again.")
-
-        for blank in os.listdir(os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\blanks"):
-            blanks.append(blank)
+    for blank in os.listdir(blanks_folder):
+        blanks.append(blank)
     
     blanks.sort()
     return blanks

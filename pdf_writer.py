@@ -1,5 +1,4 @@
 import pypdf
-import os
 import pdfrw
 
 def fill_single_page_pdf(input_path, output_path, field_values):
