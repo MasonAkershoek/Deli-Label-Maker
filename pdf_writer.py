@@ -40,13 +40,10 @@ def fill_single_page_pdf(input_path, output_path, field_values):
         print(output_path)
         return output_path
 
-def tk_interface(chef_name, dish_title, price, weight, experation, blank, ingredients):
-    if os.name == "posix":
-        input_pdf_path = os.path.expanduser("~/Desktop") + "/blanks/" + blank
-        output_pdf_path = os.path.expanduser("~/Desktop") + "/" + dish_title + "_" + chef_name + ".pdf"
-    else:
-        input_pdf_path = os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\blanks\\" + blank
-        output_pdf_path = os.environ['USERPROFILE'] + "\\Desktop\\" + dish_title + "_" + chef_name + ".pdf"
+def tk_interface(chef_name, dish_title, price, weight, experation, blank, ingredients, desktop, blanks_folder):
+    
+    input_pdf_path = blanks_folder + blank
+    output_pdf_path = desktop + dish_title + "_" + chef_name + ".pdf"
     
 
     field_values = {

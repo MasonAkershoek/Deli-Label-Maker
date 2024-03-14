@@ -2,7 +2,7 @@ import json
 from tkinter import messagebox, filedialog
 import os
 
-def save_to_json(chef_name, dish_title, price, weight, ingredients):
+def save_to_json(chef_name, dish_title, price, weight, ingredients, saved_label_folder):
     x = {
         "chef_name" : chef_name,
         "dish_title" : dish_title,
@@ -13,13 +13,7 @@ def save_to_json(chef_name, dish_title, price, weight, ingredients):
 
     json_object = json.dumps(x, indent=4)
 
-    if os.name == "posix":
-        filepath = os.path.expanduser("~/Desktop") + "/saved_labels/" + dish_title + "_" + chef_name + ".json"
-    elif os.name == "nt":
-        filepath = os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\saved_labels\\" + dish_title + "_" + chef_name + ".json" 
-    else:
-        messagebox.showerror("Error", "Unsupported Operating System.")
-        exit(0)
+    filepath = saved_label_folder + dish_title + "_" + chef_name + ".json"
     
     if os.path.isfile(filepath):
         os.remove(filepath)
@@ -27,20 +21,11 @@ def save_to_json(chef_name, dish_title, price, weight, ingredients):
     with open(filepath, "a") as outfile:
         outfile.write(json_object)
 
-def load_from_json():
-    if os.name == "posix":
-        filepath = filedialog.askopenfilename(
-            initialdir = os.path.expanduser("~/Desktop") + "/saved_labels", 
+def load_from_json(saved_labels_folder):
+    filepath = filedialog.askopenfilename(
+            initialdir = saved_labels_folder, 
             title = "Select a File", 
             filetypes = (("Json files", "*.json"), ("All files", "*.*")))
-    elif os.name == "nt":
-        filepath = filedialog.askopenfilename(
-            initialdir = os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\saved_labels\\", 
-            title = "Select a File", 
-            filetypes = (("Json files", "*.json"), ("All files", "*.*")))
-    else:
-        messagebox.showerror("Error", "Unsupported Operating System.")
-        exit(0)
 
     with open(filepath, 'r') as openfile:
         j_object = json.load(openfile)
@@ -50,13 +35,13 @@ def load_from_json():
 def format_title(title_text):
     pass
 
-def format_weight(weight_text):
+def format_weight(weight_text, wtype):
     newString = ""
     for char in weight_text:
         for x in range(10):
             if char == str(x):
                 newString += char
-    return newString + " OZ"
+    return newString + " " + wtype
 
 def format_price(price_text):
     newString = ""
@@ -75,7 +60,7 @@ def format_ingredients(ingredients_text):
     newtext = ingredients_text.capitalize()
     if "Ingredients" not in newtext:
         newtext = "Ingredients: " + newtext
-    return newtext
+    return newtext.strip()
 
 def format_date(date):
     date_parts = date.split("-")
@@ -94,3 +79,19 @@ def format_date(date):
 
 def spell_check(to_check):
     pass
+
+def get_root_path():
+    if os.name == "posix":
+        blanks_folder = os.path.expanduser("~/Desktop") + "/blanks/"
+        saved_labels_folder = os.path.expanduser("~/Desktop") + "/saved_labels/"
+        desktop = os.path.expanduser("~/Desktop") + "/"
+    elif os.name == "nt":
+        blanks_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\blanks\\"
+        saved_labels_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\saved_labels\\"
+        desktop = os.environ['USERPROFILE'] + "\\Desktop"
+    else:
+        messagebox.showerror("Error", "Unsupported Operating System.")
+        exit(0)
+
+    return blanks_folder, saved_labels_folder, desktop
+

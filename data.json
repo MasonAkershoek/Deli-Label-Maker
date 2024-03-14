@@ -1,0 +1,36 @@
+{
+    "Template 1" : {
+        "filename" : "blank 1.pdf",
+        "2line" : "blank 1-2.pdf",
+        "maxline" : 21,
+        "preview" : "preview/blank 1.jpg"
+    },
+
+    "Template 2" : {
+        "filename" : "blank 1.pdf",
+        "2line" : "blank 1-2.pdf",
+        "maxline" : 14,
+        "preview" : "preview/blank 1.jpg"
+    },
+
+    "Template 3" : {
+        "filename" : "blank 3.pdf",
+        "2line" : "blank 3-2.pdf",
+        "maxline" : 0,
+        "preview" : "preview/blank 3.jpg"
+    },
+
+    "Template 4" : {
+        "filename" : "blank 4.pdf",
+        "2line" : "blank 4-2.pdf",
+        "maxline" : 13,
+        "preview" : "preview/blank 4.jpg"
+    },
+
+    "Template 5" : {
+        "filename" : "blank 5.pdf",
+        "2line" : "blank 5-2.pdf",
+        "maxline" : 0,
+        "preview" : "preview/blank 5.jpg"
+    }
+}
