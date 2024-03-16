@@ -5,7 +5,6 @@ from tkcalendar import DateEntry
 from pdf_writer import tk_interface
 from functions import *
 import os
-from tkPDFViewer import tkPDFViewer as pdf
 
 def on_submit():
     # Get Values From Entrys
@@ -101,9 +100,9 @@ menubar = tk.Menu(root)
 filemenu = tk.Menu(menubar, tearoff=0)
 menubar.add_cascade(label="File", menu=filemenu)
 filemenu.add_command(label="Load", command=load_json)
-filemenu.add_separator()
+#filemenu.add_separator()
 #filemenu.add_command(label="Import Template", command=None)
-filemenu.add_command(label="Edit Templates", command=open_template_editor_window)
+#filemenu.add_command(label="Edit Templates", command=open_template_editor_window)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
 root.config(menu=menubar)
@@ -187,7 +186,7 @@ label_type.current(2)
 ingredients_label = tk.Label(root, text="Ingredients: ")
 ingredients_label.grid(row=7, column=0, padx=10, pady=10, sticky=tk.W)
 
-ingredients_entry = tk.Text(root)
+ingredients_entry = tk.Text(root, height=10)
 ingredients_entry.grid(row=7, column=1, padx=10, pady=10)
 #----------------------------------------------------------------------
 

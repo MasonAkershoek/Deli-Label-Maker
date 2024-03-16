@@ -41,7 +41,7 @@ def format_weight(weight_text, wtype):
         for x in range(10):
             if char == str(x):
                 newString += char
-    return newString + " " + wtype
+    return (newString + " " + wtype).strip()
 
 def format_price(price_text):
     newString = ""
@@ -86,9 +86,10 @@ def get_root_path():
         saved_labels_folder = os.path.expanduser("~/Desktop") + "/saved_labels/"
         desktop = os.path.expanduser("~/Desktop") + "/"
     elif os.name == "nt":
-        blanks_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\blanks\\"
-        saved_labels_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Programs\\Deli Label Maker\\saved_labels\\"
-        desktop = os.environ['USERPROFILE'] + "\\Desktop"
+        blanks_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Deli Label Maker\\blanks\\"
+        saved_labels_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Deli Label Maker\\saved_labels\\"
+        desktop = os.environ['USERPROFILE'] + "\\Desktop\\"
+        print(blanks_folder)
     else:
         messagebox.showerror("Error", "Unsupported Operating System.")
         exit(0)
