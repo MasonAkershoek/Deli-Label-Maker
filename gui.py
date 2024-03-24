@@ -82,13 +82,71 @@ def open_template_editor_window():
     t3 = tk.Radiobutton(template_editor, text="No caps", variable=v)
     t3.grid(row=3, column=3, padx=10, pady=10)
 
+def launch_window():
+    welcome = Toplevel(root)
+    welcome.title("Welcome!")
+    welcome.grab_set()
+
+    deli = tk.PhotoImage(file=(rootFolder + "dinnerbell.png"))
+    deliLogo = tk.Label(welcome, image=deli)
+    deliLogo.deli = deli
+    deliLogo.pack()
+
+    lab1 = tk.Label(welcome, text="WELCOME TO DELI LABEL MAKER!", font=("League Gothic Regular", 20))
+    lab1.pack()
+
+    lab2 = tk.Label(
+         welcome, 
+         text=""
+    )
+
+def previews():
+    preview = Toplevel(root)
+    preview.title("Label Previews")
+
+    p1 = tk.PhotoImage(file=(preview_folder + "template_1.png"))
+    p2 = tk.PhotoImage(file=(preview_folder + "template_2.png"))
+    p3 = tk.PhotoImage(file=(preview_folder + "template_3.png"))
+    p4 = tk.PhotoImage(file=(preview_folder + "template_4.png"))
+    p5 = tk.PhotoImage(file=(preview_folder + "template_5.png"))
+
+    l1 = tk.Label(preview, text="Label 1")
+    l1.grid(row=0, column=0)
+    p1Label = tk.Label(preview, image=p1, text="Label 1" )
+    p1Label.grid(row=1, column=0, padx=10, pady=10)
+    p1Label.p1 = p1
+
+    l2 = tk.Label(preview, text="Label 2")
+    l2.grid(row=0, column=1)
+    p2Label = tk.Label(preview, image=p2)
+    p2Label.grid(row=1, column=1, padx=10, pady=10)
+    p1Label.p2 = p2
+
+    l3 = tk.Label(preview, text="Label 3")
+    l3.grid(row=2, column=0)
+    p3Label = tk.Label(preview, image=p3)
+    p3Label.grid(row=3, column=0, padx=10, pady=10)
+    p1Label.p3 = p3
+
+    l4 = tk.Label(preview, text="Label 4")
+    l4.grid(row=2, column=1)
+    p4Label = tk.Label(preview, image=p4)
+    p4Label.grid(row=3, column=1, padx=10, pady=10)
+    p1Label.p4 = p4
+
+    l5 = tk.Label(preview, text="Label 5")
+    l5.grid(row=4, column=0)
+    p5Label = tk.Label(preview, image=p5)
+    p5Label.grid(row=5, column=0, padx=10, pady=10)
+    p1Label.p5 = p5
+
 
 # Create the main window
 root = tk.Tk()
 root.title("Deli Lable Maker")
 
 # Check OS
-blanks_folder, saved_labels_folder, desktop = get_root_path()
+blanks_folder, saved_labels_folder, desktop, rootFolder, preview_folder = get_root_path()
 
 # Get the current templates available in the templates folder
 blanks = get_blanks()
@@ -204,5 +262,7 @@ result_label = tk.Label(root, text="")
 result_label.grid(row=9, column=0, columnspan=2, pady=10)
 #----------------------------------------------------------------------
 
+previews()
+#launch_window()
 # Tkinter event loop
 root.mainloop()

@@ -88,11 +88,13 @@ def get_root_path():
     elif os.name == "nt":
         blanks_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Deli Label Maker\\blanks\\"
         saved_labels_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Deli Label Maker\\saved_labels\\"
+        preview_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Deli Label Maker\\previews\\"
+        root_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Deli Label Maker\\"
         desktop = os.environ['USERPROFILE'] + "\\Desktop\\"
         print(blanks_folder)
     else:
         messagebox.showerror("Error", "Unsupported Operating System.")
         exit(0)
 
-    return blanks_folder, saved_labels_folder, desktop
+    return blanks_folder, saved_labels_folder, desktop, root_folder, preview_folder
 
