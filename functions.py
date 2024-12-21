@@ -175,19 +175,19 @@ def fetch_label(label):
 def create_label(labDat):
     labelData = format_data(labDat)
     tmp = {}
-    for x in range(9):
+    for x in range(10):
         tmp["t"+str(x+1)] = labelData["dish title"]
 
-    for x in range(9):
+    for x in range(10):
         tmp["i"+str(x+1)] = labelData["description"]
     
-    for x in range(9):
+    for x in range(10):
         tmp["w"+str(x+1)] = labelData["weight"]
     
-    for x in range(9):
+    for x in range(10):
         tmp["p"+str(x+1)] = labelData["price"]
     
-    for x in range(9):
+    for x in range(10):
         tmp["e"+str(x+1)] = labelData["date"]
     
     pdf_writer.fill_single_page_pdf(globs.blanks_folder + labelData["template"] + ".pdf", "C:\\Users\\mason\\" + labelData["dish title"] + "_" + labelData["chef"] + ".pdf", tmp)

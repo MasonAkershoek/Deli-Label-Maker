@@ -1,12 +1,14 @@
 from tkinter import *
 from tkinter.ttk import *
 import sqlite3
+import sys
+from tkinter import messagebox
 
 _DEV_MODE = True
 
 version = 1.5
 
-OS = ""
+OS = sys.platform.lower()
 
 # Application Data
 blanks = []
@@ -22,9 +24,19 @@ loadLabel = ""
 currentFrame = 0
 frames = []
 
-# Data folders
-blanks_folder = "blanks/"
+blanks_folder = ""
 
+# Data folders
+if not _DEV_MODE:
+    if OS == "win32":
+        data_folder = "C:/ProgramData/DeliLabelMaker/"
+    elif OS == "linux" or OS == "darwin":
+        data_folder = "/usr/share/DeliLabelMaker/"
+    else:
+        messagebox.showerror("Error", "Unsupported operating system. Please run this application on Windows, Linux, or MacOS.")
+        exit()
+else:
+    blanks_folder = "blanks/"
 # Styles
 # buttonStyle = Style()
 # recentsButtonStyle = Style()

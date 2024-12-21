@@ -8,14 +8,14 @@ import os
 import globs
 import screens
 
-# Setup environment
-globs.OS = os.name
 
 def main():
     # Create the main window
     root = tk.Tk()
     globs.root = root
     root.title("Deli Lable Maker")
+    root.iconbitmap("icon.ico")
+    root.resizable(False, False)
 
     # Setup Menu Bar
     menubar = tk.Menu(root)
