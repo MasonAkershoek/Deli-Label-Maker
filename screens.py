@@ -7,8 +7,11 @@ from functions import *
 class MainMenu(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent, padx=10,pady=10)
-        self.title = tk.Label(self, text="Deli Label Maker")
-        self.title.pack(padx=10,pady=10)
+        self.title = tk.Label(self, text="Farmhouse Deli", font=("Albertsthal Typewriter", 24))
+        self.title.pack(padx=10)
+
+        self.subTitle = tk.Label(self, text="Label Maker", font=("Albertsthal Typewriter", 15))
+        self.subTitle.pack(padx=10,pady=10)
 
         self.newLabelButton = tk.Button(self, text="New Label", command=lambda: switch_screen(2))
         self.newLabelButton.pack(padx=10,pady=10)
