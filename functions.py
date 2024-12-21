@@ -1,68 +1,13 @@
-import json
-from tkinter import messagebox, filedialog
+import globs
 import os
+from tkinter import messagebox
+import pdf_writer
 
-def save_to_json(chef_name, dish_title, price, weight, ingredients, saved_label_folder):
-    x = {
-        "chef_name" : chef_name,
-        "dish_title" : dish_title,
-        "price" : price,
-        "weight" : weight,
-        "ingredients" : ingredients
-    }
-
-    json_object = json.dumps(x, indent=4)
-
-    filepath = saved_label_folder + dish_title + "_" + chef_name + ".json"
-    
-    if os.path.isfile(filepath):
-        os.remove(filepath)
-
-    with open(filepath, "a") as outfile:
-        outfile.write(json_object)
-
-def load_from_json(saved_labels_folder):
-    filepath = filedialog.askopenfilename(
-            initialdir = saved_labels_folder, 
-            title = "Select a File", 
-            filetypes = (("Json files", "*.json"), ("All files", "*.*")))
-
-    with open(filepath, 'r') as openfile:
-        j_object = json.load(openfile)
-    
-    return j_object
-
-def format_title(title_text):
+def load_label():
     pass
 
-def format_weight(weight_text, wtype):
-    newString = ""
-    for char in weight_text:
-        for x in range(10):
-            if char == str(x):
-                newString += char
-    return (newString + " " + wtype).strip()
-
-def format_price(price_text):
-    newString = ""
-    for char in price_text:
-        if char == ".":
-            newString += char
-        for x in range(10):
-            if char == str(x):
-                newString += char
-    if newString[-1] == "0" and newString[-2] == "0":
-        newString = newString.replace(".00", "")
-    
-    return "$" + newString
-
-def format_ingredients(ingredients_text):
-    newtext = ingredients_text.capitalize()
-    if "Ingredients" not in newtext:
-        newtext = "Ingredients: " + newtext
-    return newtext.strip()
-
-def format_date(date):
+def format_date(datefun):
+    date = str(datefun)
     date_parts = date.split("-")
     year = date_parts[0]
     year = year[2] + year[3]
@@ -77,24 +22,224 @@ def format_date(date):
 
     return newdate
 
-def spell_check(to_check):
-    pass
+def format_ingredients(newtext):
+    if "Ingredients" not in newtext:
+        newtext = "Ingredients: " + newtext
+    return newtext.strip()
 
-def get_root_path():
-    if os.name == "posix":
-        blanks_folder = os.path.expanduser("~/Desktop") + "/blanks/"
-        saved_labels_folder = os.path.expanduser("~/Desktop") + "/saved_labels/"
-        desktop = os.path.expanduser("~/Desktop") + "/"
-    elif os.name == "nt":
-        blanks_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Deli Label Maker\\blanks\\"
-        saved_labels_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Deli Label Maker\\saved_labels\\"
-        preview_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Deli Label Maker\\previews\\"
-        root_folder = os.environ['USERPROFILE'] + "\\AppData\\Local\\Deli Label Maker\\"
-        desktop = os.environ['USERPROFILE'] + "\\Desktop\\"
-        print(blanks_folder)
+def format_price(price_text):
+    newString = ""
+    for char in price_text:
+        if char == ".":
+            newString += char
+        for x in range(10):
+            if char == str(x):
+                newString += char
+    if newString[-1] == "0" and newString[-2] == "0":
+        newString = newString.replace(".00", "")
+    
+    return "$" + newString
+
+def format_weight(weight_text, wtype):
+    newString = ""
+    for char in weight_text:
+        for x in range(10):
+            if char == str(x):
+                newString += char
+    return (newString + " " + wtype).strip()
+
+def save_label(labelData):
+    print("MAMA", labelData)
+    globs.cursor.execute("SELECT * FROM labels WHERE dishTitle is ?", (labelData["dish title"],))
+    if len(globs.cursor.fetchall()) == 0:
+        globs.cursor.execute("INSERT INTO labels (chef,department,dishTitle,price,weight,weightType,description,gf,v,dairyFree,template) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                (
+                                    labelData["chef"],
+                                    labelData["department"],
+                                    labelData["dish title"],
+                                    labelData["price"],
+                                    labelData["weight"],
+                                    labelData["weightType"],
+                                    labelData["description"],
+                                    labelData["GF"],
+                                    labelData["vegan"],
+                                    labelData["dairyFree"],
+                                    labelData["template"],
+                                )
+                            )
+        messagebox.showinfo("Label Saved", "Label has been saved.")
     else:
-        messagebox.showerror("Error", "Unsupported Operating System.")
-        exit(0)
+        if messagebox.askquestion("Overwrite Label", "This label already exists. Would you like to overwrite it?") == "yes":
+            print("MAMA")
+            globs.cursor.execute("UPDATE labels SET chef = ?, dishTitle = ?, department = ?, v = ?, gf = ?, dairyFree = ?, price = ?, weight = ?, weightType = ?, template = ?, description = ? WHERE dishTitle = ?",
+                                    (
+                                        labelData["chef"],
+                                        labelData["dish title"],
+                                        labelData["department"],
+                                        labelData["vegan"],
+                                        labelData["GF"],
+                                        labelData["dairyFree"],
+                                        labelData["price"],
+                                        labelData["weight"],
+                                        labelData["weightType"],
+                                        labelData["template"],
+                                        labelData["description"],
+                                        labelData["dish title"]
+                                    )
+                                )
+            messagebox.showinfo("Label Saved", "Label has been saved.")
+        else:
+            return
 
-    return blanks_folder, saved_labels_folder, desktop, root_folder, preview_folder
 
+    globs.database.commit()
+
+def delete_label(label):
+    if messagebox.askquestion("Delete Label", "Are you sure you want to delete this label?") == "yes":
+        globs.cursor.execute("DELETE FROM labels WHERE dishTitle = ?", (label,))
+        globs.database.commit()
+
+def fetch_dish_titles(column_name, department=None):
+    tmp = []
+    if department:
+        query = f"SELECT {column_name} FROM labels WHERE department = '{department}'"
+    else:
+        query = f"SELECT {column_name} FROM labels"
+    globs.cursor.execute(query)
+    for row in globs.cursor.fetchall():
+        tmp.append(row[0])
+    return tmp
+
+def fetch_favorites():
+    tmp = []
+    globs.cursor.execute("SELECT dishTitle FROM labels WHERE favorite = 1")
+    for row in globs.cursor.fetchall():
+        tmp.append(row[0])
+    return tmp
+
+def check_favorite(label=None):
+    if label:
+        globs.cursor.execute("SELECT favorite FROM labels WHERE dishTitle = ?", (label,))
+        if globs.cursor.fetchall()[0][0] == 1:
+            return True
+        else:
+            return False
+    globs.cursor.execute("SELECT dishTitle FROM labels WHERE favorite = 1", )
+    if len(globs.cursor.fetchall()) > 0:
+        return True
+    else:
+        return False
+    
+def set_favorite(label):
+    globs.cursor.execute("SELECT favorite FROM labels WHERE dishTitle = ?", (label,))
+    if globs.cursor.fetchall()[0][0] == 1:
+        globs.cursor.execute("UPDATE labels SET favorite = 0 WHERE dishTitle = ?", (label,))
+    else:
+        globs.cursor.execute("UPDATE labels SET favorite = 1 WHERE dishTitle = ?", (label,))
+    globs.database.commit()
+    
+def search_labels(search):
+    tmp = []
+    globs.cursor.execute("SELECT dishTitle FROM labels WHERE dishTitle LIKE ?", (f"%{search}%",))
+    for row in globs.cursor.fetchall():
+        tmp.append(row[0])
+    return tmp
+
+def switch_screen(new):
+    globs.frames[globs.currentFrame].onLeave()
+    globs.currentFrame = new
+    for frame in globs.frames:
+        frame.pack_forget()
+    globs.frames[new].onEnter()
+    globs.frames[new].pack()
+
+def fetch_label(label):
+    globs.cursor.execute("SELECT * FROM labels WHERE dishTitle = ?", (label,))
+    for row in globs.cursor.fetchall():
+        return {
+            "chef": row[0],
+            "department": row[1],
+            "dish title": row[2],
+            "price": row[3],
+            "weight": row[4],
+            "weightType": row[5],
+            "description": row[6],
+            "GF": row[7],
+            "vegan": row[8],
+            "dairyFree": row[9],
+            "template": row[10],
+            "noDate" : "1",
+            "date" : ""
+        }
+    
+def create_label(labDat):
+    labelData = format_data(labDat)
+    tmp = {}
+    for x in range(9):
+        tmp["t"+str(x+1)] = labelData["dish title"]
+
+    for x in range(9):
+        tmp["i"+str(x+1)] = labelData["description"]
+    
+    for x in range(9):
+        tmp["w"+str(x+1)] = labelData["weight"]
+    
+    for x in range(9):
+        tmp["p"+str(x+1)] = labelData["price"]
+    
+    for x in range(9):
+        tmp["e"+str(x+1)] = labelData["date"]
+    
+    pdf_writer.fill_single_page_pdf(globs.blanks_folder + labelData["template"] + ".pdf", "C:\\Users\\mason\\" + labelData["dish title"] + "_" + labelData["chef"] + ".pdf", tmp)
+
+def format_data(labDat):
+    data = labDat
+    if data["weightType"] == "LB":
+        data["weight"] += " lbs"
+    elif data["weightType"] == "OZ":
+        data["weight"] += " OZ"
+    elif data["weightType"] == "G":
+        data["weight"] += " G"
+    else:
+        data["weight"] = ""
+    
+    if data["noDate"]:
+        data["date"] = ""
+    else:
+        data["date"] = format_date(data["date"])
+    
+    data["price"] = format_price(data["price"])
+    
+    if data["GF"] == "1" or data["vegan"] == "1" or data["dairyFree"] == "1":
+        st = "\n\n"
+        if data["vegan"] == "1":
+            st += "V   "
+        if data["GF"] == "1":
+            st += "GF   "
+        if data["dairyFree"] == "1":
+            st += "Dairy Free"
+        if len(st) > 3:
+            data["description"] += st
+    
+    data["description"] = format_ingredients(data["description"])
+
+    
+    
+    return data
+
+def get_blanks():
+    if len(os.listdir(globs.blanks_folder)) == 0:
+            messagebox.showerror("Error", "The blanks folder is empty, please fill it with blanks before trying again.")
+
+    for blank in os.listdir(globs.blanks_folder):
+        globs.blanks.append(blank)
+    
+    globs.blanks.sort()
+
+def center_window():
+    window = globs.root
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    x = (screen_width // 2) - window.winfo_reqwidth()
+    y = (screen_height // 2) - window.winfo_reqheight()
+    window.geometry(f"+{x}+{y}")

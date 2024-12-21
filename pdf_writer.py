@@ -1,5 +1,7 @@
 import pypdf
 import pdfrw
+import tempfile
+import globs
 
 def fill_single_page_pdf(input_path, output_path, field_values):
     with open(input_path, 'rb') as pdf_file:
@@ -41,7 +43,7 @@ def fill_single_page_pdf(input_path, output_path, field_values):
 
 def tk_interface(chef_name, dish_title, price, weight, experation, blank, ingredients, desktop, blanks_folder):
     
-    input_pdf_path = blanks_folder + blank
+    input_pdf_path = globs.blanks_folder + blank
     output_pdf_path = desktop + dish_title + "_" + chef_name + ".pdf"
     
 
