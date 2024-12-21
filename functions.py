@@ -235,11 +235,3 @@ def get_blanks():
         globs.blanks.append(blank)
     
     globs.blanks.sort()
-
-def center_window():
-    window = globs.root
-    screen_width = window.winfo_screenwidth()
-    screen_height = window.winfo_screenheight()
-    x = (screen_width // 2) - window.winfo_reqwidth()
-    y = (screen_height // 2) - window.winfo_reqheight()
-    window.geometry(f"+{x}+{y}")
