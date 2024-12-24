@@ -90,9 +90,9 @@ class LabelMaker(tk.Frame):
         self.templateVar.set("blank1")
         self.noDateVar = tk.StringVar()
         self.templateLabel = tk.Label(self.f4, text="Template: ").grid(column=0,row=0, padx=10, pady=10, sticky=tk.W)
-        self.templateEntry = ttk.Combobox(self.f4, values=('blank1', 'blank2', 'blank3', 'blank4', 'blank5', 'blank6'), textvariable=self.templateVar, state="readonly")
+        self.templateEntry = ttk.Combobox(self.f4, values=('blank1', 'blank2', 'blank3', 'blank4', 'blank5'), textvariable=self.templateVar, state="readonly")
         self.templateEntry.grid(column=1,row=0,padx=10,pady=10)
-        self.noDate = ttk.Checkbutton(self.f4, text="No Date", variable=self.noDateVar, state="readonly")
+        self.noDate = ttk.Checkbutton(self.f4, text="No Date", variable=self.noDateVar)
         self.noDate.grid(column=0,row=2,padx=10,pady=10)
         self.dateEntryLab = tk.Label(self.f4, text="Exp Date: ").grid(column=0 , row=1 , padx=10, pady=10, sticky=tk.W)
         self.dateEntry = DateEntry(self.f4, width=12, background="darkblue", foreground="white", borderwidth=2)
@@ -149,6 +149,7 @@ class LabelMaker(tk.Frame):
         tmp["date"] = str(self.dateEntry.get_date()).strip()
         tmp["noDate"] = self.noDateVar.get().strip()
         tmp["description"] = self.dishDescription.get(1.0, END).strip()
+        print(tmp["date"])
         return tmp
     
     def setFields(self):

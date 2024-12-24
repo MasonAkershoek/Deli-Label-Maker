@@ -4,6 +4,8 @@ from tkinter import messagebox
 import pdf_writer
 
 def format_date(datefun):
+    if datefun == "":
+        return ""
     date = str(datefun)
     date_parts = date.split("-")
     year = date_parts[0]
@@ -20,11 +22,15 @@ def format_date(datefun):
     return newdate
 
 def format_ingredients(newtext):
+    if newtext == "":
+        return ""
     if "Ingredients" not in newtext:
         newtext = "Ingredients: " + newtext
     return newtext.strip()
 
 def format_price(price_text):
+    if price_text == "":
+        return ""
     newString = ""
     for char in price_text:
         if char == ".":
@@ -38,6 +44,8 @@ def format_price(price_text):
     return "$" + newString
 
 def format_weight(weight_text, wtype):
+    if weight_text == "":
+        return ""
     newString = ""
     for char in weight_text:
         for x in range(10):
@@ -201,7 +209,7 @@ def format_data(labDat):
     else:
         data["weight"] = ""
     
-    if data["noDate"]:
+    if data["noDate"] == "1":
         data["date"] = ""
     else:
         data["date"] = format_date(data["date"])
