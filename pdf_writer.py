@@ -44,9 +44,7 @@ def fill_single_page_pdf(input_path, output_path, field_values):
                 pdfrw.PdfWriter().write(tmp_path, pdf)
                 messagebox.showinfo("Success", "The PDF has been filled successfully.")
                 os.startfile(tmp_path)
-                print(tmp_path)
             
     except Exception as e:
         messagebox.showerror("Error", "An error occurred while trying to fill the PDF. Please try again.")
-        print(e)
 

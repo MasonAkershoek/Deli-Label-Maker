@@ -149,7 +149,6 @@ class LabelMaker(tk.Frame):
         tmp["date"] = str(self.dateEntry.get_date()).strip()
         tmp["noDate"] = self.noDateVar.get().strip()
         tmp["description"] = self.dishDescription.get(1.0, END).strip()
-        print(tmp)
         return tmp
     
     def setFields(self):
@@ -341,13 +340,11 @@ class LabelManager(tk.Frame):
     def handleListPress(self, listbox):
         if listbox.curselection() != ():
             if check_favorite(listbox.get(listbox.curselection())):
-                print("unfavorite")
                 self.bbutton4.config(text="Unfavorite")
                 self.kbutton4.config(text="Unfavorite")
                 self.mbutton4.config(text="Unfavorite")
                 self.sbutton4.config(text="Unfavorite")
             else:
-                print("favorite")
                 self.bbutton4.config(text="Favorite")
                 self.kbutton4.config(text="Favorite")
                 self.mbutton4.config(text="Favorite")

@@ -46,6 +46,9 @@ def format_weight(weight_text, wtype):
     return (newString + " " + wtype).strip()
 
 def save_label(labelData):
+    if labelData["dish title"] == "" or labelData["chef"] == "":
+        messagebox.showerror("Error", "Some or all of the fields have been left empty. Please fill out the form completely.")
+        return
     globs.cursor.execute("SELECT * FROM labels WHERE dishTitle is ?", (labelData["dish title"],))
     if len(globs.cursor.fetchall()) == 0:
         globs.cursor.execute("INSERT INTO labels (chef,department,dishTitle,price,weight,weightType,description,gf,v,dairyFree,template) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -113,7 +116,6 @@ def fetch_favorites():
     return tmp
 
 def check_favorite(label=None):
-    print(label)
     if label:
         globs.cursor.execute("SELECT favorite FROM labels WHERE dishTitle = ?", (label,))
         if globs.cursor.fetchall()[0][0] == "1":

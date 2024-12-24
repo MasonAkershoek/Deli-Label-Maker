@@ -20,7 +20,6 @@ bakeryLabs = []
 misLabs = []
 
 if not _DEV_MODE:
-    print(os.getenv('APPDATA'))
     database = sqlite3.connect(os.getenv('APPDATA') + "\\Deli Label Maker\\labels.db")
 else:   
     database = sqlite3.connect("labels.db")
@@ -35,9 +34,7 @@ blanks_folder = ""
 
 # Data folders
 if not _DEV_MODE:
-    print(OS)
     if OS == "win32":
-        print("Windows")
         blanks_folder = "C:\\Program Files (x86)\\Deli Label Maker\\Blanks\\"
     elif OS == "linux" or OS == "darwin":
         blanks_folder = "/usr/share/DeliLabelMaker/"
