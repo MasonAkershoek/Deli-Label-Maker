@@ -1,13 +1,11 @@
 from tkinter import *
-import tkinter as tk
 from tkinter.ttk import *
 import sqlite3
 import sys
 from tkinter import messagebox
-from tkinter import ttk
-import pyglet
+import os
 
-_DEV_MODE = True
+_DEV_MODE = False
 
 version = 1.5
 
@@ -20,7 +18,12 @@ previews = []
 kitchenLabs = []
 bakeryLabs = []
 misLabs = []
-database = sqlite3.connect("labels.db")
+
+if not _DEV_MODE:
+    print(os.getenv('APPDATA'))
+    database = sqlite3.connect(os.getenv('APPDATA') + "\\Deli Label Maker\\labels.db")
+else:   
+    database = sqlite3.connect("labels.db")
 cursor = database.cursor()
 
 # Frame Data
@@ -32,10 +35,12 @@ blanks_folder = ""
 
 # Data folders
 if not _DEV_MODE:
+    print(OS)
     if OS == "win32":
-        data_folder = "C:/ProgramData/DeliLabelMaker/"
+        print("Windows")
+        blanks_folder = "C:\\Program Files (x86)\\Deli Label Maker\\Blanks\\"
     elif OS == "linux" or OS == "darwin":
-        data_folder = "/usr/share/DeliLabelMaker/"
+        blanks_folder = "/usr/share/DeliLabelMaker/"
     else:
         messagebox.showerror("Error", "Unsupported operating system. Please run this application on Windows, Linux, or MacOS.")
         exit()

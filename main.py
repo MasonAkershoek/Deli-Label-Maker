@@ -6,11 +6,11 @@ import TKinterModernThemes as TKMT
 
 class App(TKMT.ThemedTKinterFrame):
         def __init__(self, theme, mode, usecommandlineargs=True, usethemeconfigfile=True):
-            super().__init__("TITLE", theme, mode, usecommandlineargs, usethemeconfigfile)
+            super().__init__("Deli Label Maker", theme, mode, usecommandlineargs, usethemeconfigfile)
+            self.root.iconbitmap("icon.ico")
 
             # Setup Menu Bar
             menubar = tk.Menu(self.master)
-            menubar.add_command(label="About")
             menubar.add_command(label="Main Menu", command=lambda: switch_screen(0))
             menubar.add_command(label="Exit", command=self.master.quit)
             self.master.config(menu=menubar)

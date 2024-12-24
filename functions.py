@@ -3,9 +3,6 @@ import os
 from tkinter import messagebox
 import pdf_writer
 
-def load_label():
-    pass
-
 def format_date(datefun):
     date = str(datefun)
     date_parts = date.split("-")
@@ -49,7 +46,6 @@ def format_weight(weight_text, wtype):
     return (newString + " " + wtype).strip()
 
 def save_label(labelData):
-    print("MAMA", labelData)
     globs.cursor.execute("SELECT * FROM labels WHERE dishTitle is ?", (labelData["dish title"],))
     if len(globs.cursor.fetchall()) == 0:
         globs.cursor.execute("INSERT INTO labels (chef,department,dishTitle,price,weight,weightType,description,gf,v,dairyFree,template) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -70,7 +66,6 @@ def save_label(labelData):
         messagebox.showinfo("Label Saved", "Label has been saved.")
     else:
         if messagebox.askquestion("Overwrite Label", "This label already exists. Would you like to overwrite it?") == "yes":
-            print("MAMA")
             globs.cursor.execute("UPDATE labels SET chef = ?, dishTitle = ?, department = ?, v = ?, gf = ?, dairyFree = ?, price = ?, weight = ?, weightType = ?, template = ?, description = ? WHERE dishTitle = ?",
                                     (
                                         labelData["chef"],
@@ -118,9 +113,10 @@ def fetch_favorites():
     return tmp
 
 def check_favorite(label=None):
+    print(label)
     if label:
         globs.cursor.execute("SELECT favorite FROM labels WHERE dishTitle = ?", (label,))
-        if globs.cursor.fetchall()[0][0] == 1:
+        if globs.cursor.fetchall()[0][0] == "1":
             return True
         else:
             return False
@@ -132,7 +128,7 @@ def check_favorite(label=None):
     
 def set_favorite(label):
     globs.cursor.execute("SELECT favorite FROM labels WHERE dishTitle = ?", (label,))
-    if globs.cursor.fetchall()[0][0] == 1:
+    if globs.cursor.fetchall()[0][0] == "1":
         globs.cursor.execute("UPDATE labels SET favorite = 0 WHERE dishTitle = ?", (label,))
     else:
         globs.cursor.execute("UPDATE labels SET favorite = 1 WHERE dishTitle = ?", (label,))
@@ -233,5 +229,3 @@ def get_blanks():
 
     for blank in os.listdir(globs.blanks_folder):
         globs.blanks.append(blank)
-    
-    globs.blanks.sort()

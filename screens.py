@@ -228,6 +228,7 @@ class LabelManager(tk.Frame):
     def makeKitchenTab(self):
         # Set up kitchen list
         self.kitchenListBox = tk.Listbox(self.page1, height=20,width=30)
+        self.kitchenListBox.bind("<<ListboxSelect>>", lambda e: self.handleListPress(self.kitchenListBox))
         self.listBoxScroll = tk.Scrollbar(self.kitchenListBox, orient=tk.VERTICAL, command=self.kitchenListBox.yview)
         self.kitchenListBox.configure(yscrollcommand=self.listBoxScroll.set)
         self.populateList(self.kitchenListBox, "Kitchen")
@@ -245,6 +246,7 @@ class LabelManager(tk.Frame):
     def makeBakeryTab(self):
         # Set up bakery list
         self.bakeryListBox = tk.Listbox(self.page2, height=20, width=30)
+        self.bakeryListBox.bind("<<ListboxSelect>>", lambda e: self.handleListPress(self.bakeryListBox))
         self.listBoxScroll = tk.Scrollbar(self.bakeryListBox, orient=tk.VERTICAL, command=self.bakeryListBox.yview)
         self.bakeryListBox.configure(yscrollcommand=self.listBoxScroll.set)
         self.populateList(self.bakeryListBox, "Bakery")
@@ -262,6 +264,7 @@ class LabelManager(tk.Frame):
     def makeMiscTab(self):
         # Set up misc list
         self.miscListBox = tk.Listbox(self.page3, height=20, width=30)
+        self.miscListBox.bind("<<ListboxSelect>>", lambda e: self.handleListPress(self.miscListBox))
         self.listBoxScroll = tk.Scrollbar(self.miscListBox, orient=tk.VERTICAL, command=self.miscListBox.yview)
         self.miscListBox.configure(yscrollcommand=self.listBoxScroll.set)
         self.populateList(self.miscListBox, "Misc")
@@ -280,6 +283,7 @@ class LabelManager(tk.Frame):
         # Set up favorites list
         self.favoriteListBox = tk.Listbox(self.page5, height=20, width=30)
         self.listBoxScroll = tk.Scrollbar(self.favoriteListBox, orient=tk.VERTICAL, command=self.favoriteListBox.yview)
+        self.favoriteListBox.bind("<<ListboxSelect>>", lambda e: self.handleListPress(self.favoriteListBox))
         self.favoriteListBox.configure(yscrollcommand=self.listBoxScroll.set)
         self.populateList(self.favoriteListBox, "Favorites")
 
@@ -296,9 +300,10 @@ class LabelManager(tk.Frame):
     def makeSearchTab(self):
         # set up search favorites list
         self.searchListBox = tk.Listbox(self.page4, height=20, width=30)
+        self.searchListBox.bind("<<ListboxSelect>>", lambda e: self.handleListPress(self.searchListBox))
         self.listBoxScroll = tk.Scrollbar(self.searchListBox, orient=tk.VERTICAL, command=self.searchListBox.yview)
         self.searchListBox.configure(yscrollcommand=self.listBoxScroll.set)
-        self.searchListBox.bind("<<ListboxSelect>>", lambda e: self.handleListPress(self.searchListBox))
+
 
         # set up search bar
         self.searchBar = tk.Entry(self.page4, width=30)
@@ -327,7 +332,6 @@ class LabelManager(tk.Frame):
         else:
             for item in fetch_dish_titles("dishTitle", department):
                 listbox.insert(tk.END, item)
-        listbox.bind("<<ListboxSelect>>", lambda e: self.handleListPress(listbox))
 
     def setFavorite(self, listbox):
         set_favorite(listbox.get(listbox.curselection()))
@@ -337,11 +341,13 @@ class LabelManager(tk.Frame):
     def handleListPress(self, listbox):
         if listbox.curselection() != ():
             if check_favorite(listbox.get(listbox.curselection())):
+                print("unfavorite")
                 self.bbutton4.config(text="Unfavorite")
                 self.kbutton4.config(text="Unfavorite")
                 self.mbutton4.config(text="Unfavorite")
                 self.sbutton4.config(text="Unfavorite")
             else:
+                print("favorite")
                 self.bbutton4.config(text="Favorite")
                 self.kbutton4.config(text="Favorite")
                 self.mbutton4.config(text="Favorite")
