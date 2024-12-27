@@ -7,20 +7,23 @@ from functions import *
 class MainMenu(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent, padx=10,pady=10)
-        self.title = tk.Label(self, text="Farmhouse Deli", font=("Albertsthal Typewriter", 24))
+        self.title = tk.Label(self, text="Farmhouse Deli", font=("Albertsthal Typewriter", 30))
         self.title.pack(padx=10)
 
         self.subTitle = tk.Label(self, text="Label Maker", font=("Albertsthal Typewriter", 15))
         self.subTitle.pack(padx=10,pady=10)
 
-        self.newLabelButton = tk.Button(self, text="New Label", command=lambda: switch_screen(2))
+        self.sep = ttk.Separator(self, orient="horizontal")
+        self.sep.pack(padx=10, pady=10, fill="x")
+
+        self.newLabelButton = tk.Button(self, text="New Label", command=lambda: switch_screen(2), width=20, height=2)
         self.newLabelButton.pack(padx=10,pady=10)
 
-        self.labelManagerButton = tk.Button(self, text="Label Manager", command=lambda: switch_screen(1))
+        self.labelManagerButton = tk.Button(self, text="Label Manager", command=lambda: switch_screen(1), width=20, height=2)
         self.labelManagerButton.pack(padx=10,pady=10)
 
         self.maker = tk.Label(self, text=f"Made by Mason Akershoek: Version {globs.version}")
-        self.maker.pack(padx=10,pady=10)
+        self.maker.pack(side='bottom')
     
     def onEnter(self):
         pass
@@ -123,14 +126,14 @@ class LabelMaker(tk.Frame):
     def clear(self):
         self.chefEntry.delete(0, END)
         self.titleEntry.delete(0, END)
-        self.departmentBox.set("")
+        self.departmentBox.set("Kitchen")
         self.veganCheckVar.set(0)
         self.GFCheckVar.set(0)
         self.dairyCheckVar.set(0)
         self.priceEntry.delete(0, END)
         self.weightEntry.delete(0, END)
-        self.weightTypeEntry.set("")
-        self.templateEntry.set("")
+        self.weightTypeEntry.set("NONE")
+        self.templateEntry.set("blank1")
         self.noDateVar.set(0)
         self.dishDescription.delete(1.0, END)
 
@@ -166,6 +169,10 @@ class LabelMaker(tk.Frame):
             self.weightTypeEntry.set(label["weightType"])
             self.templateEntry.set(label["template"])
             self.dishDescription.insert(1.0, label["description"])
+        else:
+            self.departmentBox.set("Kitchen")
+            self.weightTypeEntry.set("NONE")
+            self.templateEntry.set("blank1")
     
     def onLeave(self):
         self.clear()
@@ -202,8 +209,9 @@ class LabelManager(tk.Frame):
         self.miscActions.grid(column=1, row=0, padx=10, pady=10)
         self.searchBar.grid(column=0, row=0, padx=10, pady=10)
         self.searchButton.grid(column=1, row=0, padx=10, pady=10)
-        self.searchListBox.grid(column=0, row=1, padx=10, pady=10)
-        self.searchActions.grid(column=1, row=1, padx=10, pady=10)
+        self.departmentSelect.grid(column=0,row=1, padx=10, pady=10)
+        self.searchListBox.grid(column=0, row=2, padx=10, pady=10)
+        self.searchActions.grid(column=1, row=2, padx=10, pady=10)
         self.nb.add(self.page1, text="Kitchen")
         self.nb.add(self.page2, text="Bakery")
         self.nb.add(self.page3, text="Misc")
@@ -254,7 +262,7 @@ class LabelManager(tk.Frame):
         # set up bakery action buttons
         self.bbutton1 = tk.Button(self.bakeryActions, text="Edit", command=lambda : self.edit_label(self.bakeryListBox))
         self.bbutton2 = tk.Button(self.bakeryActions, text="Create", command=lambda: self.createLabel(self.bakeryListBox)) # Maybe switch to print
-        self.bbutton3 = tk.Button(self.bakeryActions, text="Delete", command=lambda: self.delete_Label(self.bakeryListBox, "Bakery"))
+        self.bbutton3 = tk.Button(self.bakeryActions, text="Delete", command=lambda: self.delete_Label(self.bakeryListBox))
         self.bbutton4 = tk.Button(self.bakeryActions, text="Favorite", command=lambda: self.setFavorite(self.bakeryListBox))
         self.bbutton1.pack(padx=10,pady=10)
         self.bbutton2.pack(padx=10,pady=10)
@@ -308,21 +316,32 @@ class LabelManager(tk.Frame):
         # set up search bar
         self.searchBar = tk.Entry(self.page4, width=30)
         self.searchButton = tk.Button(self.page4, text="Search", command=lambda: self.search())
+        self.departVar = tk.StringVar()
+        self.departVar.set("NONE")
+        self.departmentSelect = ttk.Combobox(self.page4, values=('NONE', 'Kitchen', 'Bakery', 'Misc'), textvariable=self.departVar, state="readonly")
 
         # set up search action buttons
         self.sbutton1 = tk.Button(self.searchActions, text="Edit", command=lambda : self.edit_label(self.searchListBox))
         self.sbutton2 = tk.Button(self.searchActions, text="Create", command=lambda: self.createLabel(self.searchListBox))
-        self.sbutton3 = tk.Button(self.searchActions, text="Delete", command=lambda: self.delete_Label(self.searchListBox))
+        self.sbutton3 = tk.Button(self.searchActions, text="Delete", command=lambda: self.deleteFromSearch(self.searchListBox))
         self.sbutton4 = tk.Button(self.searchActions, text="Favorite", command=lambda: self.setFavorite(self.searchListBox))
         self.sbutton1.pack(padx=10,pady=10)
         self.sbutton2.pack(padx=10,pady=10)
         self.sbutton3.pack(padx=10,pady=10)
         self.sbutton4.pack(padx=10,pady=10)
 
+    def deleteFromSearch(self, listBox):
+        self.delete_Label(listBox)
+        self.search()
+
     def search(self):
         self.searchListBox.delete(0, tk.END)
-        for item in search_labels(self.searchBar.get()):
-            self.searchListBox.insert(tk.END, item)
+        if self.departVar.get() == "NONE":
+            for item in search_labels(self.searchBar.get()):
+                self.searchListBox.insert(tk.END, item)
+        else:
+            for item in search_labels(self.searchBar.get(), self.departVar.get()):
+                self.searchListBox.insert(tk.END, item)
 
     def populateList(self, listbox, department):
         listbox.pack()

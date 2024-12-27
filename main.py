@@ -8,6 +8,7 @@ class App(TKMT.ThemedTKinterFrame):
         def __init__(self, theme, mode, usecommandlineargs=True, usethemeconfigfile=True):
             super().__init__("Deli Label Maker", theme, mode, usecommandlineargs, usethemeconfigfile)
             self.root.iconbitmap("icon.ico")
+            self.root.geometry("1158x684")
 
             # Setup Menu Bar
             menubar = tk.Menu(self.master)
@@ -21,7 +22,7 @@ class App(TKMT.ThemedTKinterFrame):
             globs.frames.append(screens.LabelMaker(self.master))
 
             # Show the main menu
-            globs.frames[globs.currentFrame].pack()
+            globs.frames[globs.currentFrame].pack(fill=tk.BOTH, expand=1)
             self.run()
             
 

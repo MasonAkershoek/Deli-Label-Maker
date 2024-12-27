@@ -1,4 +1,5 @@
 import globs
+import tkinter as tk
 import os
 from tkinter import messagebox
 import pdf_writer
@@ -144,9 +145,12 @@ def set_favorite(label):
         globs.cursor.execute("UPDATE labels SET favorite = 1 WHERE dishTitle = ?", (label,))
     globs.database.commit()
     
-def search_labels(search):
+def search_labels(search, department=None):
     tmp = []
-    globs.cursor.execute("SELECT dishTitle FROM labels WHERE dishTitle LIKE ?", (f"%{search}%",))
+    if department:
+        globs.cursor.execute("SELECT dishTitle FROM labels WHERE dishTitle LIKE ? AND department = ?", (f"%{search}%", department))
+    else:
+        globs.cursor.execute("SELECT dishTitle FROM labels WHERE dishTitle LIKE ?", (f"%{search}%",))
     for row in globs.cursor.fetchall():
         tmp.append(row[0])
     return tmp
@@ -157,11 +161,13 @@ def switch_screen(new):
     for frame in globs.frames:
         frame.pack_forget()
     globs.frames[new].onEnter()
-    globs.frames[new].pack()
+    globs.frames[new].pack(fill=tk.BOTH, expand=1)
 
 def fetch_label(label):
     globs.cursor.execute("SELECT * FROM labels WHERE dishTitle = ?", (label,))
     for row in globs.cursor.fetchall():
+        if row[0] == "":
+            return None
         return {
             "chef": row[0],
             "department": row[1],
@@ -179,6 +185,8 @@ def fetch_label(label):
         }
     
 def create_label(labDat):
+    if fetch_label(labDat["dish title"]) == None:
+        save_label(labDat)
     labelData = format_data(labDat)
     tmp = {}
     for x in range(10):
