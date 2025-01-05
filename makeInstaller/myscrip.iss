@@ -37,7 +37,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "C:\Users\mason\Desktop\deli\Deli-Label-Maker\makeInstaller\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\mason\Desktop\deli\Deli-Label-Maker\Fonts\*"; DestDir: "{app}\Fonts"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Users\mason\Desktop\deli\Deli-Label-Maker\blanks\*"; DestDir: "{app}\blanks"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\mason\Desktop\deli\Deli-Label-Maker\labels.db"; DestDir: "{userappdata}\Deli Label Maker"; Flags: ignoreversion
+Source: "C:\Users\mason\Desktop\deli\Deli-Label-Maker\labels.db"; DestDir: "{userappdata}\Deli Label Maker"; Flags: ignoreversion onlyifdoesntexist
 Source: "C:\Users\mason\Desktop\deli\Deli-Label-Maker\icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\mason\Desktop\deli\Deli-Label-Maker\Fonts\Albertsthal Typewriter.ttf"; DestDir: "{commonfonts}"; FontInstall: "Albertsthal Typewriter"; Flags: onlyifdoesntexist uninsneveruninstall
 Source: "C:\Users\mason\Desktop\deli\Deli-Label-Maker\Fonts\LeagueGothic-Regular-VariableFont_wdth.ttf"; DestDir: "{commonfonts}"; FontInstall: "League Gothic Regular"; Flags: onlyifdoesntexist uninsneveruninstall

@@ -3,6 +3,7 @@ import tkinter as tk
 import os
 from tkinter import messagebox
 import pdf_writer
+import webbrowser
 
 def format_date(datefun):
     if datefun == "":
@@ -57,7 +58,7 @@ def format_weight(weight_text, wtype):
 def save_label(labelData):
     if labelData["dish title"] == "" or labelData["chef"] == "":
         messagebox.showerror("Error", "Some or all of the fields have been left empty. Please fill out the form completely.")
-        return
+        return None
     globs.cursor.execute("SELECT * FROM labels WHERE dishTitle is ?", (labelData["dish title"],))
     if len(globs.cursor.fetchall()) == 0:
         globs.cursor.execute("INSERT INTO labels (chef,department,dishTitle,price,weight,weightType,description,gf,v,dairyFree,template) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -96,7 +97,7 @@ def save_label(labelData):
                                 )
             messagebox.showinfo("Label Saved", "Label has been saved.")
         else:
-            return
+            return None
 
 
     globs.database.commit()
@@ -186,7 +187,8 @@ def fetch_label(label):
     
 def create_label(labDat):
     if fetch_label(labDat["dish title"]) == None:
-        save_label(labDat)
+        if save_label(labDat) == None:
+            return
     labelData = format_data(labDat)
     tmp = {}
     for x in range(10):
@@ -247,3 +249,6 @@ def get_blanks():
 
     for blank in os.listdir(globs.blanks_folder):
         globs.blanks.append(blank)
+
+def open_help():
+    webbrowser.open("https://masonakershoek.github.io/Deli-Label-Maker/#/")

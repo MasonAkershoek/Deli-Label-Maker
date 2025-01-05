@@ -5,9 +5,9 @@ import sys
 from tkinter import messagebox
 import os
 
-_DEV_MODE = True
+_DEV_MODE = False
 
-version = 1.5
+version = 2.0
 
 OS = sys.platform.lower()
 

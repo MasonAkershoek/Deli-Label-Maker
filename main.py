@@ -3,8 +3,6 @@ from functions import *
 import globs
 import screens
 import TKinterModernThemes as TKMT
-import socket
-from socket import AF_INET, SOCK_DGRAM
 
 class App(TKMT.ThemedTKinterFrame):
         def __init__(self, theme, mode, usecommandlineargs=True, usethemeconfigfile=True):
@@ -15,6 +13,7 @@ class App(TKMT.ThemedTKinterFrame):
             # Setup Menu Bar
             menubar = tk.Menu(self.master)
             menubar.add_command(label="Main Menu", command=lambda: switch_screen(0))
+            menubar.add_command(label="Help", command=open_help)
             menubar.add_command(label="Exit", command=self.master.quit)
             self.master.config(menu=menubar)
 

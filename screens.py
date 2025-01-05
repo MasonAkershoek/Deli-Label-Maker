@@ -38,7 +38,7 @@ class LabelMaker(tk.Frame):
 
         self.top = tk.Frame(self)
         self.f1 = ttk.LabelFrame(self.top, text="Who made it and Dish Title")
-        self.f2 = ttk.LabelFrame(self.top, text="Food Alergens")
+        self.f2 = ttk.LabelFrame(self.top, text="Food Allergens")
         self.f3 = ttk.LabelFrame(self.top, text="Weight and Price")
         self.f4 = ttk.LabelFrame(self.top, text="Template and Date")
         self.f5 = ttk.LabelFrame(self, text="Dish Description")

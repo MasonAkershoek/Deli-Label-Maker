@@ -14,3 +14,7 @@
 ---
 
 Welcome to the deli label maker wiki! This page will show you how to properly and effectively make use of all this programs features.
+
+> ## [Label Maker](labelmaker.md)
+
+> ## [Label Manager](labelmanager.md)
