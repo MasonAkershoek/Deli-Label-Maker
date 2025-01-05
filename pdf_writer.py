@@ -3,6 +3,7 @@ import pdfrw
 import tempfile
 import os
 from tkinter import messagebox
+import pdf2image
 
 def fill_single_page_pdf(input_path, output_path, field_values):
     try:
@@ -46,5 +47,6 @@ def fill_single_page_pdf(input_path, output_path, field_values):
                 os.startfile(tmp_path)
             
     except Exception as e:
+        print(e)
         messagebox.showerror("Error", "An error occurred while trying to fill the PDF. Please try again.")
 

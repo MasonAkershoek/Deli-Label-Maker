@@ -3,6 +3,8 @@ from functions import *
 import globs
 import screens
 import TKinterModernThemes as TKMT
+import socket
+from socket import AF_INET, SOCK_DGRAM
 
 class App(TKMT.ThemedTKinterFrame):
         def __init__(self, theme, mode, usecommandlineargs=True, usethemeconfigfile=True):

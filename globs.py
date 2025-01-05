@@ -5,7 +5,7 @@ import sys
 from tkinter import messagebox
 import os
 
-_DEV_MODE = False
+_DEV_MODE = True
 
 version = 1.5
 
