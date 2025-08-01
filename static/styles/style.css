@@ -1,0 +1,39 @@
+html, body {
+    background-color: #181A1B;
+    margin: 0px;
+    margin-top: 0px;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#loginarea {
+    margin: auto;
+    width: 50%;
+    border: solid;
+    padding: 10px;
+    position: relative;
+    border-radius: 20px;
+}
+
+.test {
+    border: solid white;
+    width: fit-content;
+    margin: auto;
+}
+
+.inputfield {
+    border: solid springgreen;
+    border-radius: 20px;
+}
